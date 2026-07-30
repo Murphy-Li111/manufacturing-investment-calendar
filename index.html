@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>制造业投资日历 2026</title>
+  <title>制造业投资日历 2026 · 机械军工</title>
   <style>
     /* 优设标题黑：商用字体，优先引用本机已安装字体；若你把字体文件放到 fonts/ 目录，会用本地文件兜底。 */
     @font-face {
@@ -50,6 +50,7 @@
       padding-left: 20px;
       border-left: 7px solid #e74c3c;
       line-height: 1.15;
+      white-space: nowrap;
     }
 
     .title-icon {
@@ -194,6 +195,10 @@
     }
 
     .day-label {
+      display: none;
+    }
+
+    .period-section {
       display: none;
     }
 
@@ -495,16 +500,46 @@
       .modal-researcher {
         font-size: 14px;
       }
+
+      .period-section {
+        display: block;
+        margin-top: 26px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+      }
+
+      .period-heading {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 12px;
+        font-family: "黑体", "SimHei", "Microsoft YaHei", "PingFang SC", sans-serif;
+      }
+
+      .period-events {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .period-section .event {
+        padding: 10px 12px;
+      }
+
+      .period-section .event-title {
+        font-size: 14px;
+      }
+
+      .period-section .event-meta {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="page-title">
-      <div class="title-text">
-        <span class="title-l1">制造业</span>
-        <span class="title-l2">投资日历</span>
-      </div>
+      <div class="title-text"><span class="title-l1">制造业</span><span class="title-l2">投资日历</span></div>
       <span class="title-icon" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M8 2v4M16 2v4"></path>
@@ -524,6 +559,7 @@
     </div>
 
     <div class="calendar" id="calendar"></div>
+    <div class="period-section" id="periodSection"></div>
   </div>
 
   <div class="modal-overlay" id="overlay">
@@ -546,37 +582,113 @@
       { name: "December", cn: "12月", idx: 11 },
     ];
 
+    // 事件数据：key = "月份idx-日"。researcher（@研究员）由用户标注提供，不再自动生成。
     const eventsData = {
-      "6-2": [
-        {
-          title: "上海国际具身智能产业博览会",
-          attention: 2,
-          impact: "人形机器人",
-        },
+      "7-2": [
+            {
+                  "title": "上海国际具身智能产业博览会",
+                  "attention": 2,
+                  "impact": "人形机器人",
+                  "researcher": "宋丽凌/李孟菲"
+            }
       ],
-      "6-5": [
-        {
-          title: "第四届国际商业航天遥感卫星应用大会暨第二届国际空天信息与卫星产业展览会",
-          attention: 3,
-          impact: "商业航天",
-        },
+      "7-5": [
+            {
+                  "title": "第四届国际商业航天遥感卫星应用大会暨第二届国际空天信息与卫星产业展览会",
+                  "attention": 2,
+                  "impact": "商业航天",
+                  "researcher": "李孟菲"
+            }
       ],
-      "6-8": [
-        {
-          title: "人形机器人发布会",
-          attention: 3,
-          impact: "移动机器人",
-        },
+      "7-7": [
+            {
+                  "title": "SpaceX纳入纳斯达克100指数",
+                  "attention": 3,
+                  "impact": "商业航天",
+                  "researcher": "李孟菲"
+            }
       ],
-    };
+      "7-10": [
+            {
+                  "title": "SK海力士计划最早于7月10日在纳斯达克发行ADR",
+                  "attention": 2,
+                  "impact": "半导体设备",
+                  "researcher": "李孟菲"
+            },
+            {
+                  "title": "2026\"机器人+\"创新发展大会",
+                  "attention": 2,
+                  "impact": "人形机器人",
+                  "researcher": "宋丽凌/李孟菲"
+            }
+      ],
+      "7-11": [
+            {
+                  "title": "2026中国具身智能机器人产业展于南京举行",
+                  "attention": 2,
+                  "impact": "人形机器人",
+                  "researcher": "李孟菲"
+            }
+      ],
+      "7-16": [
+            {
+                  "title": "2026空天信息大会暨中科星图生态合伙人大会",
+                  "attention": 3,
+                  "impact": "商业航天",
+                  "researcher": "李孟菲"
+            },
+            {
+                  "title": "第七届亚太国际智能装备博览会",
+                  "attention": 2,
+                  "impact": "智能装备",
+                  "researcher": "孙艺心"
+            }
+      ],
+      "7-17": [
+            {
+                  "title": "2026世界人工智能大会暨人工智能全球治理高级别会议",
+                  "attention": 2,
+                  "impact": "人形机器人",
+                  "researcher": "李孟菲"
+            }
+      ],
+      "7-22": [
+            {
+                  "title": "2026国际低空经济博览会",
+                  "attention": 3,
+                  "impact": "低空经济",
+                  "researcher": "宋丽凌/李孟菲"
+            }
+      ],
+      "7-24": [
+            {
+                  "title": "第八届建筑机器人技术大会",
+                  "attention": 3,
+                  "impact": "人形机器人",
+                  "researcher": "李孟菲"
+            }
+      ],
+      "7-30": [
+            {
+                  "title": "8月PMI",
+                  "attention": 1,
+                  "impact": "人形机器人",
+                  "researcher": "李孟菲"
+            }
+      ]
+};
 
-    function classifyResearcher(impact) {
-      if (/机械|军工|机器人|航天|人形|具身|国防|兵器/.test(impact)) return "李孟菲";
-      if (/新能源|光伏|锂电|电池|储能|氢|风电/.test(impact)) return "宋丽凌";
-      if (/汽车|整车|车企|新能源车企/.test(impact)) return "孙意新";
-      if (/公用|环保|水务|电力|燃气|生态/.test(impact)) return "谢瑾贤";
-      return "";
-    }
+    // 当月期间事件：key = 月份idx，仅手机端底部「x月期间：」区块展示，格式同 eventsData 单条事件。
+    const periodData = {
+      "7": [
+            {
+                  "title": "WAC大会",
+                  "attention": 3,
+                  "impact": "半导体设备",
+                  "researcher": "李孟菲"
+            }
+      ]
+};
 
     const weekdays = [
       { label: "Sunday", weekend: true },
@@ -596,6 +708,7 @@
     const modalEvents = document.getElementById("modalEvents");
     const modalResearcher = document.getElementById("modalResearcher");
     const modalClose = document.getElementById("modalClose");
+    const periodSection = document.getElementById("periodSection");
 
     const WEEK_CN = ["日", "一", "二", "三", "四", "五", "六"];
     const isTouch = window.matchMedia("(hover: none)").matches || "ontouchstart" in window;
@@ -610,7 +723,7 @@
 
     months.forEach((m, i) => {
       const tab = document.createElement("div");
-      tab.className = "tab" + (i === 0 ? " active" : "");
+      tab.className = "tab" + (i === 1 ? " active" : "");
       tab.textContent = m.cn;
       tab.addEventListener("click", () => {
         document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
@@ -689,6 +802,19 @@
         cell.innerHTML = '<div class="day-number">' + String(d).padStart(2, "0") + "</div>";
         calendarEl.appendChild(cell);
       }
+
+      const periodList = periodData[m.idx] || [];
+      if (periodList.length) {
+        periodSection.innerHTML =
+          '<div class="period-heading">' + m.cn + "期间：</div>" +
+          '<div class="period-events">' +
+          periodList.map(buildEventHtml).join("") +
+          "</div>";
+        periodSection.style.display = "";
+      } else {
+        periodSection.innerHTML = "";
+        periodSection.style.display = "none";
+      }
     }
 
     function openModal(key, m, dayNum) {
@@ -707,10 +833,11 @@
 
       const researchers = new Set();
       list.forEach((ev) => {
-        const r = classifyResearcher(ev.impact);
-        if (r) researchers.add(r);
+        if (ev.researcher) researchers.add(ev.researcher);
       });
-      modalResearcher.textContent = "@研究员：" + (Array.from(researchers).join("、") || "—");
+      modalResearcher.textContent = researchers.size
+        ? "@研究员：" + Array.from(researchers).join("、")
+        : "@研究员：—";
 
       overlay.classList.add("show");
     }
@@ -723,7 +850,7 @@
       if (e.key === "Escape") overlay.classList.remove("show");
     });
 
-    renderMonth(0);
+    renderMonth(1);
   </script>
 </body>
 </html>
