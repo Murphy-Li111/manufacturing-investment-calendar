@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>制造业投资日历 2026</title>
+  <style>
+    /* 优设标题黑：商用字体，优先引用本机已安装字体；若你把字体文件放到 fonts/ 目录，会用本地文件兜底。 */
+    @font-face {
+      font-family: "YousheTitleHei";
+      src: local("优设标题黑"),
+           local("Youshe Title Black"),
+           local("优设标题黑 Regular"),
+           local("YousheBiaoTiHei"),
+           local("优设标题黑-Regular"),
+           url("fonts/youshe-title-hei.woff2") format("woff2"),
+           url("fonts/youshe-title-hei.ttf") format("truetype");
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+      color: #1a1a1a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 56px 24px 64px;
+      position: relative;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1180px;
+    }
+
+    .page-title {
+      font-family: "优设标题黑", "YousheTitleHei", "黑体", "SimHei", "Microsoft YaHei", "PingFang SC", sans-serif;
+      font-size: 66px;
+      font-weight: 400;
+      letter-spacing: 0;
+      color: #1a1a1a;
+      margin-bottom: 32px;
+      padding-left: 20px;
+      border-left: 7px solid #e74c3c;
+      line-height: 1.15;
+    }
+
+    .title-icon {
+      display: none;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 34px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 11px 22px;
+      background-color: rgba(0, 0, 0, 0.07);
+      color: #333;
+      border-radius: 3px;
+      font-size: 15px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.15s, color 0.15s;
+    }
+
+    .tab:hover {
+      background-color: rgba(0, 0, 0, 0.13);
+    }
+
+    .tab.active {
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .month-title {
+      font-size: 38px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      color: #1a1a1a;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .weekday {
+      text-align: center;
+      padding: 16px 0;
+      font-size: 15px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: 3px;
+    }
+
+    .weekday.weekend {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .weekday.weekday-mid {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+
+    .day {
+      background-color: rgba(0, 0, 0, 0.03);
+      height: 175px;
+      border-radius: 3px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      font-family: "STKaiti", "KaiTi", "楷体", "KaiTi_GB2312", serif;
+    }
+
+    .day.hot {
+      background-color: rgba(231, 76, 60, 0.14);
+    }
+
+    .day.other-month {
+      background-color: rgba(222, 231, 238, 0.68);
+    }
+
+    .day.has-event {
+      cursor: pointer;
+    }
+
+    .events {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: #999 transparent;
+    }
+
+    .events::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .events::-webkit-scrollbar-thumb {
+      background-color: #999;
+      border-radius: 3px;
+    }
+
+    .events::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    .day-number {
+      align-self: flex-end;
+      font-size: 15px;
+      color: #333;
+      opacity: 0.9;
+      margin-top: 6px;
+    }
+
+    .day.hot .day-number {
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .day.other-month .day-number {
+      color: #777;
+    }
+
+    .day-label {
+      display: none;
+    }
+
+    .event {
+      background-color: #eef1f4;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 3px;
+      padding: 7px 8px;
+      font-family: "STKaiti", "KaiTi", "楷体", "KaiTi_GB2312", serif;
+    }
+
+    .event-title {
+      color: #1a1a1a;
+      font-weight: 700;
+      font-size: 12.5px;
+      line-height: 1.3;
+    }
+
+    .event-meta {
+      color: #555;
+      font-size: 11px;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background-color: #fff;
+      width: 100%;
+      max-width: 540px;
+      max-height: 82vh;
+      overflow-y: auto;
+      border-radius: 8px;
+      padding: 26px 30px 24px;
+      position: relative;
+      color: #1a1a1a;
+      scrollbar-width: thin;
+      scrollbar-color: #999 transparent;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal::-webkit-scrollbar { width: 6px; }
+    .modal::-webkit-scrollbar-thumb { background-color: #999; border-radius: 3px; }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 26px;
+      line-height: 1;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .modal-close:hover {
+      color: #1a1a1a;
+    }
+
+    .modal-date {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      padding-right: 30px;
+      color: #1a1a1a;
+    }
+
+    .modal-events {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-event {
+      background-color: #eef1f4;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      padding: 14px 16px;
+      font-family: "STKaiti", "KaiTi", "楷体", "KaiTi_GB2312", serif;
+    }
+
+    .modal-event .event-title {
+      font-size: 15px;
+      color: #1a1a1a;
+    }
+
+    .modal-event .event-meta {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .modal-researcher {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #ddd;
+      font-size: 15px;
+      font-weight: 700;
+      color: #e74c3c;
+    }
+
+    /* ===== 手机端：单列竖排 ===== */
+    @media (max-width: 768px) {
+      body {
+        padding: 22px 14px 40px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .page-title {
+        display: none;
+      }
+
+      .title-text {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        line-height: 1.05;
+      }
+
+      .title-l1 {
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: 0;
+      }
+
+      .title-l2 {
+        font-size: 27px;
+        font-weight: 800;
+        letter-spacing: 0;
+        margin-top: 2px;
+      }
+
+      .title-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        background: none;
+        border-radius: 0;
+        color: #e74c3c;
+        margin-left: auto;
+      }
+
+      .title-icon svg {
+        width: 46px;
+        height: 46px;
+      }
+
+      .tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 22px;
+        padding-bottom: 4px;
+        gap: 8px;
+      }
+
+      .tabs::-webkit-scrollbar {
+        height: 0;
+      }
+
+      .tab {
+        flex: 0 0 auto;
+        padding: 9px 16px;
+        font-size: 14px;
+      }
+
+      .header {
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+
+      .month-title {
+        display: block;
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        color: #1a1a1a;
+      }
+
+      .year-suffix {
+        display: none;
+      }
+
+      .hint {
+        font-size: 12px;
+        text-align: right;
+        color: #666;
+      }
+
+      .calendar {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .weekday {
+        display: none;
+      }
+
+      .day,
+      .event,
+      .modal-event,
+      .modal-date,
+      .modal-researcher {
+        font-family: "黑体", "SimHei", "Microsoft YaHei", "PingFang SC", sans-serif;
+      }
+
+      .day {
+        height: auto;
+        min-height: 0;
+        display: block;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0;
+        background-color: transparent;
+        padding: 14px 2px;
+      }
+
+      .day.hot {
+        background-color: rgba(231, 76, 60, 0.14);
+      }
+
+      .day.other-month {
+        display: none;
+      }
+
+      .day-label {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .day-label .dl-date {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a1a1a;
+      }
+
+      .day-label .dl-week {
+        font-size: 13px;
+        color: #888;
+      }
+
+      .day-number {
+        display: none;
+      }
+
+      .day:not(.has-event) .day-label {
+        opacity: 0.55;
+        padding: 2px 0;
+      }
+
+      .day.has-event {
+        cursor: pointer;
+      }
+
+      .events {
+        overflow: visible;
+      }
+
+      .event {
+        padding: 10px 12px;
+      }
+
+      .event-title {
+        font-size: 14px;
+      }
+
+      .event-meta {
+        font-size: 12px;
+      }
+
+      .modal {
+        padding: 22px 18px 20px;
+        max-height: 90vh;
+        border-radius: 10px;
+      }
+
+      .modal-date {
+        font-size: 21px;
+      }
+
+      .modal-researcher {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-title">
+      <div class="title-text">
+        <span class="title-l1">制造业</span>
+        <span class="title-l2">投资日历</span>
+      </div>
+      <span class="title-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2v4M16 2v4"></path>
+          <rect x="3" y="5" width="18" height="16" rx="2.5"></rect>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+          <path d="M12 14v4"></path>
+          <path d="M8.5 21 12 23.5 15.5 21"></path>
+        </svg>
+      </span>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="header">
+      <div class="month-title" id="monthTitle">July<span class="year-suffix">, 2026</span></div>
+      <div class="hint">双击（手机点按）日期查看当天事件详情</div>
+    </div>
+
+    <div class="calendar" id="calendar"></div>
+  </div>
+
+  <div class="modal-overlay" id="overlay">
+    <div class="modal">
+      <div class="modal-close" id="modalClose">&times;</div>
+      <div class="modal-date" id="modalDate"></div>
+      <div class="modal-events" id="modalEvents"></div>
+      <div class="modal-researcher" id="modalResearcher"></div>
+    </div>
+  </div>
+
+  <script>
+    const year = 2026;
+    const months = [
+      { name: "July", cn: "7月", idx: 6 },
+      { name: "August", cn: "8月", idx: 7 },
+      { name: "September", cn: "9月", idx: 8 },
+      { name: "October", cn: "10月", idx: 9 },
+      { name: "November", cn: "11月", idx: 10 },
+      { name: "December", cn: "12月", idx: 11 },
+    ];
+
+    const eventsData = {
+      "6-2": [
+        {
+          title: "上海国际具身智能产业博览会",
+          attention: 2,
+          impact: "人形机器人",
+        },
+      ],
+      "6-5": [
+        {
+          title: "第四届国际商业航天遥感卫星应用大会暨第二届国际空天信息与卫星产业展览会",
+          attention: 3,
+          impact: "商业航天",
+        },
+      ],
+    };
+
+    function classifyResearcher(impact) {
+      if (/机械|军工|机器人|航天|人形|具身|国防|兵器/.test(impact)) return "李孟菲";
+      if (/新能源|光伏|锂电|电池|储能|氢|风电/.test(impact)) return "宋丽凌";
+      if (/汽车|整车|车企|新能源车企/.test(impact)) return "孙意新";
+      if (/公用|环保|水务|电力|燃气|生态/.test(impact)) return "谢瑾贤";
+      return "";
+    }
+
+    const weekdays = [
+      { label: "Sunday", weekend: true },
+      { label: "Monday", weekend: false },
+      { label: "Tuesday", weekend: false },
+      { label: "Wednesday", weekend: false },
+      { label: "Thursday", weekend: false },
+      { label: "Friday", weekend: false },
+      { label: "Saturday", weekend: true },
+    ];
+
+    const tabsEl = document.getElementById("tabs");
+    const calendarEl = document.getElementById("calendar");
+    const titleEl = document.getElementById("monthTitle");
+    const overlay = document.getElementById("overlay");
+    const modalDate = document.getElementById("modalDate");
+    const modalEvents = document.getElementById("modalEvents");
+    const modalResearcher = document.getElementById("modalResearcher");
+    const modalClose = document.getElementById("modalClose");
+
+    const WEEK_CN = ["日", "一", "二", "三", "四", "五", "六"];
+    const isTouch = window.matchMedia("(hover: none)").matches || "ontouchstart" in window;
+
+    function attachOpen(cell, key, m, d) {
+      if (isTouch) {
+        cell.addEventListener("click", () => openModal(key, m, d));
+      } else {
+        cell.addEventListener("dblclick", () => openModal(key, m, d));
+      }
+    }
+
+    months.forEach((m, i) => {
+      const tab = document.createElement("div");
+      tab.className = "tab" + (i === 0 ? " active" : "");
+      tab.textContent = m.cn;
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        renderMonth(i);
+      });
+      tabsEl.appendChild(tab);
+    });
+
+    function buildEventHtml(ev) {
+      const stars = "⭐".repeat(ev.attention);
+      return (
+        '<div class="event">' +
+        '<div class="event-title">' + ev.title + "</div>" +
+        '<div class="event-meta">关注度：' + stars + "</div>" +
+        '<div class="event-meta">影响环节：' + ev.impact + "</div>" +
+        "</div>"
+      );
+    }
+
+    function renderMonth(i) {
+      const m = months[i];
+      titleEl.innerHTML = m.name + '<span class="year-suffix">, ' + year + '</span>';
+
+      calendarEl.innerHTML = "";
+
+      weekdays.forEach((w) => {
+        const wd = document.createElement("div");
+        wd.className = "weekday " + (w.weekend ? "weekend" : "weekday-mid");
+        wd.textContent = w.label;
+        calendarEl.appendChild(wd);
+      });
+
+      const firstDay = new Date(year, m.idx, 1).getDay();
+      const daysInMonth = new Date(year, m.idx + 1, 0).getDate();
+      const prevDays = new Date(year, m.idx, 0).getDate();
+
+      for (let d = prevDays - firstDay + 1; d <= prevDays; d++) {
+        const cell = document.createElement("div");
+        cell.className = "day other-month";
+        cell.innerHTML = '<div class="day-number">' + String(d).padStart(2, "0") + "</div>";
+        calendarEl.appendChild(cell);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement("div");
+        cell.className = "day";
+        const dow = new Date(year, m.idx, d).getDay();
+        const list = eventsData[m.idx + "-" + d];
+        const hasHot = list && list.some((ev) => ev.attention >= 3);
+        if (hasHot) cell.classList.add("hot");
+        const label =
+          '<div class="day-label"><span class="dl-date">' +
+          m.cn + d + "日</span><span class=\"dl-week\">周" + WEEK_CN[dow] +
+          "</span></div>";
+        if (list && list.length) {
+          cell.classList.add("has-event");
+          cell.innerHTML =
+            label +
+            '<div class="events">' +
+            list.map(buildEventHtml).join("") +
+            "</div>" +
+            '<div class="day-number">' + String(d).padStart(2, "0") + "</div>";
+          attachOpen(cell, m.idx + "-" + d, m, d);
+        } else {
+          cell.innerHTML = label + '<div class="day-number">' + String(d).padStart(2, "0") + "</div>";
+        }
+        calendarEl.appendChild(cell);
+      }
+
+      const total = firstDay + daysInMonth;
+      const trailing = (7 - (total % 7)) % 7;
+      for (let d = 1; d <= trailing; d++) {
+        const cell = document.createElement("div");
+        cell.className = "day other-month";
+        cell.innerHTML = '<div class="day-number">' + String(d).padStart(2, "0") + "</div>";
+        calendarEl.appendChild(cell);
+      }
+    }
+
+    function openModal(key, m, dayNum) {
+      const list = eventsData[key] || [];
+      modalDate.textContent = m.cn + dayNum + "日";
+      modalEvents.innerHTML = list
+        .map(
+          (ev) =>
+            '<div class="modal-event">' +
+            '<div class="event-title">' + ev.title + "</div>" +
+            '<div class="event-meta">关注度：' + "⭐".repeat(ev.attention) + "</div>" +
+            '<div class="event-meta">影响环节：' + ev.impact + "</div>" +
+            "</div>"
+        )
+        .join("");
+
+      const researchers = new Set();
+      list.forEach((ev) => {
+        const r = classifyResearcher(ev.impact);
+        if (r) researchers.add(r);
+      });
+      modalResearcher.textContent = "@研究员：" + (Array.from(researchers).join("、") || "—");
+
+      overlay.classList.add("show");
+    }
+
+    modalClose.addEventListener("click", () => overlay.classList.remove("show"));
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.classList.remove("show");
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.classList.remove("show");
+    });
+
+    renderMonth(0);
+  </script>
+</body>
+</html>
