@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>制造业投资日历 2026 · 机械军工</title>
+  <title>制造业投资日历2026</title>
   <style>
     /* 优设标题黑：商用字体，优先引用本机已安装字体；若你把字体文件放到 fonts/ 目录，会用本地文件兜底。 */
     @font-face {
@@ -698,112 +698,85 @@
     ];
 
     // 事件数据：key = "月份idx-日"。researcher（@研究员）由用户标注提供，不再自动生成。
-    const eventsData = {
+        const eventsData = {
+      "7-1": [
+        { title: "国家发改委第四监管周期省级电网输配电价、区域电网输电价格执行", attention: 1, impact: "电力", researcher: "宋丽凌/谢瑾贤" },
+        { title: "《新能源汽车维修作业安全要求》（GB/T 47439-2026）国家标准实施", attention: 1, impact: "新能源车", researcher: "宋丽凌/孙意新" },
+        { title: "三星电机MLCC产品出货价格上调30%", attention: 2, impact: "电容", researcher: "宋丽凌" },
+        { title: "湖南裕能全系列磷酸铁锂产品价格上调2000元/吨", attention: 2, impact: "锂电池", researcher: "宋丽凌" },
+        { title: "《可再生能源消费最低比重目标和可再生能源电力消纳责任权重制度实施办法》施行", attention: 2, impact: "绿电", researcher: "谢瑾贤" },
+        { title: "建军节", attention: 3, impact: "军工", researcher: "李孟菲" },
+      ],
       "7-2": [
-            {
-                  "title": "上海国际具身智能产业博览会",
-                  "attention": 2,
-                  "impact": "人形机器人",
-                  "researcher": "宋丽凌/李孟菲"
-            }
+        { title: "欧佩克+产油国就石油政策召开月度会议", attention: 1, impact: "油服设备", researcher: "李孟菲" },
+      ],
+      "7-3": [
+        { title: "2026车用甲醇燃料产业发布盛会暨第二届醉氢电综合加注站技术交流会", attention: 1, impact: "燃料电池车", researcher: "宋丽凌" },
+        { title: "2026年中国（格尔木）锂业大会暨第四届锂电新能源发展大会（8月3日至5日）", attention: 2, impact: "锂电池", researcher: "宋丽凌" },
+      ],
+      "7-4": [
+        { title: "SpaceX上市后首份季报8月4日盘后发布", attention: 3, impact: "商业航天", researcher: "李孟菲" },
+        { title: "AMD发布二季度业绩", attention: 2, impact: "半导体设备", researcher: "李孟菲" },
       ],
       "7-5": [
-            {
-                  "title": "第四届国际商业航天遥感卫星应用大会暨第二届国际空天信息与卫星产业展览会",
-                  "attention": 2,
-                  "impact": "商业航天",
-                  "researcher": "李孟菲"
-            }
+        { title: "第27届电子封装技术国际会议（ICEPT 2026）先进制造专题论坛（8月5日至7日）", attention: 3, impact: "半导体设备", researcher: "李孟菲" },
+        { title: "尊界时代旗舰MPV及华为全场景新品发布会", attention: 2, impact: "华为汽车链", researcher: "宋丽凌/孙意新" },
+        { title: "宇树科技IPO初步询价日", attention: 3, impact: "人形机器人", researcher: "宋丽凌/李孟菲/孙意新" },
+      ],
+      "7-6": [
+        { title: "闪迪公布2026财年第四季度业绩", attention: 2, impact: "半导体设备", researcher: "李孟菲" },
       ],
       "7-7": [
-            {
-                  "title": "SpaceX纳入纳斯达克100指数",
-                  "attention": 3,
-                  "impact": "商业航天",
-                  "researcher": "李孟菲"
-            }
+        { title: "国内成品油将开启新一轮调价窗口", attention: 1, impact: "油服设备", researcher: "李孟菲" },
+      ],
+      "7-9": [
+        { title: "CIES2026第十六届中国国际储能大会暨展览会", attention: 2, impact: "储能", researcher: "宋丽凌" },
       ],
       "7-10": [
-            {
-                  "title": "SK海力士计划最早于7月10日在纳斯达克发行ADR",
-                  "attention": 2,
-                  "impact": "半导体设备",
-                  "researcher": "李孟菲"
-            },
-            {
-                  "title": "2026\"机器人+\"创新发展大会",
-                  "attention": 2,
-                  "impact": "人形机器人",
-                  "researcher": "宋丽凌/李孟菲"
-            }
+        { title: "长鑫科技纳入MSCI中国全股票指数生效", attention: 2, impact: "半导体设备", researcher: "李孟菲" },
+        { title: "宇树科技IPO网上网下申购日", attention: 3, impact: "人形机器人", researcher: "宋丽凌/李孟菲/孙意新" },
       ],
       "7-11": [
-            {
-                  "title": "2026中国具身智能机器人产业展于南京举行",
-                  "attention": 2,
-                  "impact": "人形机器人",
-                  "researcher": "李孟菲"
-            }
+        { title: "第六届全球固态电池年度峰会召开", attention: 2, impact: "固态电池", researcher: "宋丽凌" },
       ],
-      "7-16": [
-            {
-                  "title": "2026空天信息大会暨中科星图生态合伙人大会",
-                  "attention": 3,
-                  "impact": "商业航天",
-                  "researcher": "李孟菲"
-            },
-            {
-                  "title": "第七届亚太国际智能装备博览会",
-                  "attention": 2,
-                  "impact": "智能装备",
-                  "researcher": "孙艺心"
-            }
+      "7-12": [
+        { title: "EIA公布月度短期能源展望报告", attention: 1, impact: "传统能源装备", researcher: "李孟菲" },
+        { title: "国航北京首都—乌兰巴托航线启用C919国产大飞机执飞（首条常态化国际航线）", attention: 1, impact: "国产大飞机", researcher: "李孟菲" },
+        { title: "2026第四届中国具身智能机器人产业大会暨展览会(上海)", attention: 2, impact: "人形机器人", researcher: "宋丽凌/李孟菲/孙意新" },
       ],
-      "7-17": [
-            {
-                  "title": "2026世界人工智能大会暨人工智能全球治理高级别会议",
-                  "attention": 2,
-                  "impact": "人形机器人",
-                  "researcher": "李孟菲"
-            }
+      "7-13": [
+        { title: "中芯国际二季度业绩", attention: 2, impact: "半导体设备", researcher: "李孟菲" },
+      ],
+      "7-19": [
+        { title: "2026世界机器人大会（8月19日至23日）", attention: 3, impact: "人形机器人", researcher: "宋丽凌/李孟菲/孙意新" },
+      ],
+      "7-21": [
+        { title: "2026年第三届催化技术论坛暨催化加氢技术交流研讨会", attention: 1, impact: "氢能", researcher: "宋丽凌" },
       ],
       "7-22": [
-            {
-                  "title": "2026国际低空经济博览会",
-                  "attention": 3,
-                  "impact": "低空经济",
-                  "researcher": "宋丽凌/李孟菲"
-            }
+        { title: "第二届世界人形机器人运动会（8月22日至26日）", attention: 3, impact: "人形机器人", researcher: "宋丽凌/李孟菲/孙意新" },
       ],
-      "7-24": [
-            {
-                  "title": "第八届建筑机器人技术大会",
-                  "attention": 3,
-                  "impact": "人形机器人",
-                  "researcher": "李孟菲"
-            }
+      "7-23": [
+        { title: "Hot Chips 2026", attention: 2, impact: "半导体设备", researcher: "李孟菲" },
       ],
-      "7-30": [
-            {
-                  "title": "8月PMI",
-                  "attention": 1,
-                  "impact": "人形机器人",
-                  "researcher": "李孟菲"
-            }
-      ]
-};
+      "7-26": [
+        { title: "AGIC 2026深圳通用人工智能展（8月26日至28日）", attention: 3, impact: "智能制造", researcher: "宋丽凌/李孟菲" },
+        { title: "英伟达2027财年第二季度财报", attention: 2, impact: "半导体设备", researcher: "李孟菲" },
+      ],
+      "7-31": [
+        { title: "CSEAC2026第十四届半导体设备材料及核心部件展", attention: 3, impact: "半导体设备", researcher: "李孟菲" },
+        { title: "中国8月官方制造业PMI", attention: 3, impact: "制造业", researcher: "制造团队" },
+        { title: "A股2026年中报披露截止日", attention: 3, impact: "制造业", researcher: "制造团队" },
+        { title: "公募基金2026年中报披露截止日", attention: 3, impact: "制造业", researcher: "制造团队" },
+      ],
+    };
 
     // 当月期间事件：key = 月份idx，仅手机端底部「x月期间：」区块展示，格式同 eventsData 单条事件。
-    const periodData = {
+        const periodData = {
       "7": [
-            {
-                  "title": "WAC大会",
-                  "attention": 3,
-                  "impact": "半导体设备",
-                  "researcher": "李孟菲"
-            }
-      ]
-};
+        { title: "比亚迪人形机器人将于8月正式亮相", attention: 3, impact: "人形机器人", researcher: "宋丽凌/李孟菲/孙意新" },
+      ],
+    };
 
     const weekdays = [
       { label: "Sunday", weekend: true },
